@@ -1,0 +1,7 @@
+{
+  "name": "payrolldemo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
