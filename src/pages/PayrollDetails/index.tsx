@@ -1,13 +1,26 @@
 import {
   IonContent,
   IonHeader,
+  IonLabel,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import "./styles.css";
+import { PayrollData } from "../../types";
+import { format } from "date-fns";
+import { RouteComponentProps, useLocation } from "react-router";
 
-const PayrollDetails: React.FC = () => {
+interface PayrollDetailsLocationState {
+  payrollData: PayrollData;
+}
+
+const PayrollDetails: React.FC<RouteComponentProps> = () => {
+  const { state } = useLocation<PayrollDetailsLocationState>();
+  const { payrollData } = state;
+
+  // console.log("Should render payroll details", payrollData);
+
   return (
     <IonPage>
       <IonHeader>
@@ -16,11 +29,16 @@ const PayrollDetails: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        {/* <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large">Blank</IonTitle>
-            </IonToolbar>
-          </IonHeader> */}
+        <IonLabel>Payroll details for period</IonLabel>
+        <IonLabel>{`From: ${format(
+          payrollData.fromDate,
+          "dd MMM yyyy"
+        )}`}</IonLabel>
+        <IonLabel>{`To: ${format(
+          payrollData.fromDate,
+          "dd MMM yyyy"
+        )}`}</IonLabel>
+        <IonLabel>{`Amount: $${payrollData.amount}`}</IonLabel>
       </IonContent>
     </IonPage>
   );
