@@ -5,15 +5,17 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  useIonRouter,
 } from "@ionic/react";
-import "./styles.css";
-import { payrollDataSamples } from "../../utils/data/payroll";
-import PayrollListItem from "../../components/PayrollListItem";
-import { PayrollData } from "../../types";
+import { useState } from "react";
 import { RouteComponentProps } from "react-router";
+import PayrollListItem from "../../components/PayrollListItem";
+import { payrollDataSamples } from "../../data/dummy/payroll";
+import { PayrollData } from "../../types";
+import "./styles.css";
 
 const Home: React.FC<RouteComponentProps> = ({ history }) => {
+  const [payrollData] = useState(payrollDataSamples);
+
   const handlePayrollListItemClick = (payrollData: PayrollData) => {
     history.push({
       pathname: "/payroll-details",
@@ -32,10 +34,10 @@ const Home: React.FC<RouteComponentProps> = ({ history }) => {
       </IonHeader>
       <IonContent fullscreen>
         <IonList>
-          {payrollDataSamples.map((payrollData) => (
+          {payrollData.map((payrollDataItem) => (
             <PayrollListItem
-              key={payrollData.id}
-              payrollData={payrollData}
+              key={payrollDataItem.id}
+              payrollData={payrollDataItem}
               onItemClick={handlePayrollListItemClick}
             />
           ))}
