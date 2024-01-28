@@ -1,10 +1,15 @@
 import {
   IonBackButton,
+  IonButton,
   IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
   IonContent,
   IonHeader,
-  IonLabel,
   IonPage,
+  IonText,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -12,7 +17,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { RouteComponentProps, useLocation } from "react-router";
 import { PayrollData } from "../../types";
-import "./styles.css";
+import { ContentContainer, DownloadButton } from "./styles";
 
 interface PayrollDetailsLocationState {
   payrollData: PayrollData;
@@ -40,20 +45,30 @@ const PayrollDetails: React.FC<RouteComponentProps> = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonLabel>Payroll details for period</IonLabel>
-        {payrollData && (
-          <>
-            <IonLabel>{`From: ${format(
-              payrollData.fromDate,
-              "dd MMM yyyy"
-            )}`}</IonLabel>
-            <IonLabel>{`To: ${format(
-              payrollData.fromDate,
-              "dd MMM yyyy"
-            )}`}</IonLabel>
-            <IonLabel>{`Amount: $${payrollData.amount}`}</IonLabel>
-          </>
-        )}
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Payroll details</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            {payrollData && (
+              <>
+                <IonText>
+                  <p>{`From: ${format(
+                    payrollData.fromDate,
+                    "dd MMM yyyy"
+                  )}`}</p>
+                </IonText>
+                <IonText>
+                  <p>{`To: ${format(payrollData.fromDate, "dd MMM yyyy")}`}</p>
+                </IonText>
+                <IonText>
+                  <p>{`Amount: $${payrollData.amount}`}</p>
+                </IonText>
+              </>
+            )}
+            <DownloadButton>Download payslip</DownloadButton>
+          </IonCardContent>
+        </IonCard>
       </IonContent>
     </IonPage>
   );
