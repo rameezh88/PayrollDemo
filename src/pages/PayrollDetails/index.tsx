@@ -1,4 +1,6 @@
 import {
+  IonBackButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonLabel,
@@ -6,10 +8,11 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import "./styles.css";
-import { PayrollData } from "../../types";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 import { RouteComponentProps, useLocation } from "react-router";
+import { PayrollData } from "../../types";
+import "./styles.css";
 
 interface PayrollDetailsLocationState {
   payrollData: PayrollData;
@@ -17,28 +20,40 @@ interface PayrollDetailsLocationState {
 
 const PayrollDetails: React.FC<RouteComponentProps> = () => {
   const { state } = useLocation<PayrollDetailsLocationState>();
-  const { payrollData } = state;
+  const [payrollData, setPayrollData] = useState<PayrollData>();
 
-  // console.log("Should render payroll details", payrollData);
+  useEffect(() => {
+    if (state) {
+      const { payrollData } = state;
+      setPayrollData(payrollData);
+    }
+  }, [state, setPayrollData]);
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
           <IonTitle>Payroll Details</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonLabel>Payroll details for period</IonLabel>
-        <IonLabel>{`From: ${format(
-          payrollData.fromDate,
-          "dd MMM yyyy"
-        )}`}</IonLabel>
-        <IonLabel>{`To: ${format(
-          payrollData.fromDate,
-          "dd MMM yyyy"
-        )}`}</IonLabel>
-        <IonLabel>{`Amount: $${payrollData.amount}`}</IonLabel>
+        {payrollData && (
+          <>
+            <IonLabel>{`From: ${format(
+              payrollData.fromDate,
+              "dd MMM yyyy"
+            )}`}</IonLabel>
+            <IonLabel>{`To: ${format(
+              payrollData.fromDate,
+              "dd MMM yyyy"
+            )}`}</IonLabel>
+            <IonLabel>{`Amount: $${payrollData.amount}`}</IonLabel>
+          </>
+        )}
       </IonContent>
     </IonPage>
   );
