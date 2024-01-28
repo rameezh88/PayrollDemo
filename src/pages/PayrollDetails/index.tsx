@@ -1,6 +1,6 @@
+import { Directory, Filesystem } from "@capacitor/filesystem";
 import {
   IonBackButton,
-  IonButton,
   IonButtons,
   IonCard,
   IonCardContent,
@@ -17,7 +17,7 @@ import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { RouteComponentProps, useLocation } from "react-router";
 import { PayrollData } from "../../types";
-import { ContentContainer, DownloadButton } from "./styles";
+import { DownloadButton, ErrorContainer, ErrorMessage } from "./styles";
 
 interface PayrollDetailsLocationState {
   payrollData: PayrollData;
@@ -26,6 +26,7 @@ interface PayrollDetailsLocationState {
 const PayrollDetails: React.FC<RouteComponentProps> = () => {
   const { state } = useLocation<PayrollDetailsLocationState>();
   const [payrollData, setPayrollData] = useState<PayrollData>();
+  const [downloadError, setDownloadError] = useState<string | null>(null);
 
   useEffect(() => {
     if (state) {
@@ -33,6 +34,29 @@ const PayrollDetails: React.FC<RouteComponentProps> = () => {
       setPayrollData(payrollData);
     }
   }, [state, setPayrollData]);
+
+  const handleDownloadPress = () => {
+    setDownloadError(null);
+
+    Filesystem.requestPermissions()
+      .then(async () => {
+        if (payrollData?.file) {
+          const res = await Filesystem.downloadFile({
+            path: `/${payrollData.id}_payslip.pdf`,
+            directory: Directory.Documents,
+            url: payrollData?.file,
+            dataType: "file",
+          });
+
+          alert(
+            "File downloaded successfully.\n You can find it in your Files app"
+          );
+        }
+      })
+      .catch((error) => {
+        setDownloadError(error?.errorMessage);
+      });
+  };
 
   return (
     <IonPage>
@@ -59,16 +83,21 @@ const PayrollDetails: React.FC<RouteComponentProps> = () => {
                   )}`}</p>
                 </IonText>
                 <IonText>
-                  <p>{`To: ${format(payrollData.fromDate, "dd MMM yyyy")}`}</p>
+                  <p>{`To: ${format(payrollData.toDate, "dd MMM yyyy")}`}</p>
                 </IonText>
                 <IonText>
                   <p>{`Amount: $${payrollData.amount}`}</p>
                 </IonText>
               </>
             )}
-            <DownloadButton>Download payslip</DownloadButton>
+            <DownloadButton onClick={handleDownloadPress}>
+              Download payslip
+            </DownloadButton>
           </IonCardContent>
         </IonCard>
+        <ErrorContainer>
+          <ErrorMessage>{downloadError}</ErrorMessage>
+        </ErrorContainer>
       </IonContent>
     </IonPage>
   );
