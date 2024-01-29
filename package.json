@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "web": "vite --host=0.0.0.0 --port=8100 --open",
     "preview": "vite preview",
     "test.e2e": "cypress run",
     "test.unit": "vitest",
