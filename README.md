@@ -79,6 +79,27 @@ Build and run the project in `Android Studio`.
 
 Or, install the Capacitor plugin for `VSCode` and run using `Run > Android`
 
+# Implementation
+
+The app has the following features:
+
+1. **Home Screen**: The home screen shows a list of available payroll items. Clicking on one of these will take you to a Payment details page.
+2. **Payment Details**: Shows the details of the selected payment. On `iOS` and `Android`, there is a button that allows you to download a PDF of the payment details. There will be a confirmation alert dialog when the file is successfully downloaded.
+
+To check the file, you will need to check specific locations according to platform:
+
+### _iOS_:
+
+- Go to `Files` app
+- Select the "Browse" tab.
+- Open the `payrolldemo` folder. There you will see the downloaded PDFs.
+
+### _Android_:
+
+- Go to any File-browser app. Preferably the default bundled one from the manufacturer.
+- Open the "Recents" option from the menu.
+- You will see the downloaded PDFs.
+
 # Further Improvements & Challenges
 
 - Open downloaded PDF file (especially on `Android`) or open the file location.
