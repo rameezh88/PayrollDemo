@@ -12,6 +12,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  isPlatform,
 } from "@ionic/react";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -90,9 +91,11 @@ const PayrollDetails: React.FC<RouteComponentProps> = () => {
                 </IonText>
               </>
             )}
-            <DownloadButton onClick={handleDownloadPress}>
-              Download payslip
-            </DownloadButton>
+            {(isPlatform("ios") || isPlatform("android")) && (
+              <DownloadButton onClick={handleDownloadPress}>
+                Download payslip
+              </DownloadButton>
+            )}
           </IonCardContent>
         </IonCard>
         <ErrorContainer>
